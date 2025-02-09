@@ -104,6 +104,14 @@ void exibir_estado() {
 
 // Manipulador da interrupção dos botões
 void gpio_callback(uint gpio, uint32_t events) {
+    static uint32_t ultima_interrupcao = 0;
+    uint32_t agora = to_ms_since_boot(get_absolute_time());
+
+    if (agora - ultima_interrupcao < 200) {
+        return; // Ignora interrupções em menos de 200ms
+    }
+    ultima_interrupcao = agora;
+
     if (gpio == BUTTON_A) {
         estado_led_verde = !estado_led_verde;
         estado_led_azul = false; // Garante que apenas um LED fique ativo
@@ -111,6 +119,7 @@ void gpio_callback(uint gpio, uint32_t events) {
         estado_led_azul = !estado_led_azul;
         estado_led_verde = false; // Garante que apenas um LED fique ativo
     }
+    
     atualizar_leds();
     exibir_estado();
 }
@@ -187,7 +196,7 @@ int main() {
     gpio_set_dir(BUTTON_B, GPIO_IN);
     gpio_pull_up(BUTTON_B);
 
-    // Configuração da interrupção para os botões
+    // Configuração da interrupção para os botões.
     gpio_set_irq_enabled_with_callback(BUTTON_A, GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
     gpio_set_irq_enabled_with_callback(BUTTON_B, GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
 
