@@ -65,4 +65,10 @@ Joseph Borges Morais.
 
 Desenvolvido para fins de aprendizado e experimentação com RP2040, I2C, UART e LEDs WS2812.
 
+## Demonstração
+
+Assista ao vídeo do projeto no YouTube: [Clique aqui](https://youtu.be/Npuo75Xt8LA)
+
+
+
 
